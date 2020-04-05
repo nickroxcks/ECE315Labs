@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<style>
+body {background-color: white;}
+table#master {
+	border: 2px solid black;
+	border-collapse: collapse;
+	padding: 10px 10px 10px 10px;
+	
+}	
+
+table#motor {
+	
+	border: 1px solid black;
+
+}
+
+table#LCD {
+	padding: 44px 44px 44px 0px; 
+	border: 1px solid black;
+}
+
+table#A_D {
+	border: 1px solid black;
+	padding: 54px 5px 54px 7px;
+	
+	
+}
+
+table#Keypad {
+border: 1px solid black;
+padding: 0px 53px 0px 54px
+	
+}
+</style>
+<TITLE> ECE315 Lab #5 </TITLE>
+</HEAD>
+<BODY>
+<H1> ECE 315 Lab #5 Winter2017</H1>
+<H1> Peripheral Controller </H1>
+<FORM METHOD=POST>
+ <input type="hidden" name="ECE315_form" id="function" value=""> 	
+ <table id = "master">
+ 	<tr>
+ 		<td>
+ 			<table id = "motor">
+	<tr>
+		<th colspan="2">
+		Motor
+		</th>
+	</tr>
+	<tr>
+		<td align = "center" colspan = "2">
+		<input type="submit" value="Submit Motor Values" onclick="document.getElementById('function').value='validate_motor';" />
+		</td>
+		</tr>
+	</table> <!-- End Motor Table -->
+ 		</td>
+ 		<td>
+ 			<table id="LCD">
+	<tr >
+		<td  align = "center" colspan = "2">
+		<input type="submit" value="Submit LCD String" onclick="document.getElementById('function').value='validate_string';" />
+		</td>
+	</tr>
+	<tr>
+	</tr>
+	</table> <!-- End LCD Table -->
+ 			
+ 		</td>
+ 	</tr>
+ 	<tr>
+ 		<td align = "center" >
+ 			<table id="Keypad">
+	<tr>
+		<td  align = "center" colspan = "2">
+		<input type="submit" value="Read Keypad" onclick="document.getElementById('function').value='read_keypad';" />
+		</td>
+	</tr>
+	</table>
+ 			
+ 		</td>
+ 		<td>
+ 			<table id="A_D">
+	<tr>
+		<th>
+		A/D
+		</th>
+	</tr>
+	<tr>
+		<tr>
+		<td  align = "center" colspan = "2">
+		<input type="submit" value="Read Sensor" onclick="document.getElementById('function').value='read_sensor';" />
+		</td>
+	</tr>
+	</tr>
+	</table>
+ 			
+ 		</td>
+ 	</tr>
+ </table>
+ 
+<p>
+<p>
+<!--FUNCTIONCALL DisplayLameCounter -->
+ 	
+</FORM>
+</BODY>
+</HTML>
