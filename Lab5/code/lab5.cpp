@@ -14,6 +14,11 @@
 #include "Formdata.h"
 #include <string.h>
 
+/**
+ * ECE 315 Lab 5 
+ * Nicholas Serrano
+ * Evan Timms
+*/
 
 #define MAX_COUNTER_BUFFER_LENGTH 100
 #define NUM_ELEMENTS 128
@@ -42,6 +47,7 @@ void * MyQueueStorage[NUM_ELEMENTS];
 
 
 void UserMain(void * pd) {
+	//initializations
 	BYTE err = OS_NO_ERR;
     InitializeStack();
     OSChangePrio(MAIN_PRIO);
@@ -79,6 +85,25 @@ void UserMain(void * pd) {
     }
 }
 
+
+void motorHandler( int sock, PCSTR url )
+{
+	char buffer[MAX_COUNTER_BUFFER_LENGTH+1];
+	if((sock > 0) && (url != NULL)) {
+		// check if correct form
+		if(strcmp("validate_motor", myData.GetPost()) == 0){
+			//upon success, put task in the que
+			if(myData.isValid()){
+				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, " " );
+			// If error occurred display error
+			}else if(!myData.isValid()){
+				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<strong>INVALID: %s</strong>", myData.GetMessage() );
+			}
+			writestring(sock,(const char *) buffer);
+		}
+	}
+}
+
 void DisplayLameCounter( int sock, PCSTR url )
 {
 	static int form_counter = 0;
@@ -93,55 +118,53 @@ void DisplayLameCounter( int sock, PCSTR url )
 	}
 }
 
-void motorHandler( int sock, PCSTR url )
-{
-	char buffer[MAX_COUNTER_BUFFER_LENGTH+1];
-	if((sock > 0) && (url != NULL)) {
-		// If Proper form request sent
-		if(strcmp("validate_motor", myData.GetPost()) == 0){
-			// If no error occurred Display nothing and put motor request in queue
-			if(myData.isValid()){
-				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, " " );
-			// If error occurred display error
-			}else if(!myData.isValid()){
-				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<strong>INVALID: %s</strong>", myData.GetMessage() );
-			}
-			writestring(sock,(const char *) buffer);
-		}
-	}
-}
-
 
 void keypadHandler( int sock, PCSTR url )
 {
 	char buffer[MAX_COUNTER_BUFFER_LENGTH+1];
 
 	if((sock > 0) && (url != NULL)) {
-		// If Proper form request sent
+		// check if correct form
 		if(strcmp("read_keypad", myData.GetPost()) == 0){
-			// If valid keypad key pressed
 			if(myData.GetKeypadKey() < 16){
-				// Display which key was pressed in keypad
+				// show key value
 				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<IMG SRC='Keypad%d.bmp' BORDER='0'>", (int) myData.GetKeypadKey() );
 				writestring(sock,(const char *) buffer);
-			// Otherwise display empty keypad
+			// empty case/ incorrect case
 			}else{
 				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<IMG SRC='Keypad_empty.bmp' BORDER='0'>" );
 				writestring(sock,(const char *) buffer);
 			}
-			// Display empty keypad if different post requested
 		}else{
 			if(myData.GetKeypadKey() < 16){
-				// Display which key was pressed in keypad
+				// show key value
 				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<IMG SRC='Keypad%d.bmp' BORDER='0'>", (int) myData.GetKeypadKey() );
 				writestring(sock,(const char *) buffer);
-			// Otherwise display empty keypad
 			}else{
 				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<IMG SRC='Keypad_empty.bmp' BORDER='0'>" );
 				writestring(sock,(const char *) buffer);
 			}
 		}
 
+	}
+}
+
+void ADHandler( int sock, PCSTR url )
+{
+	char buffer[MAX_COUNTER_BUFFER_LENGTH+1];
+
+	if((sock > 0) && (url != NULL)) {
+		if(strcmp("read_sensor", myData.GetPost()) == 0){
+			if(myData.isValid()){
+				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<IMG SRC='BarGraph%d.bmp' BORDER='0'>", (int) myData.GetADSegment() );
+				writestring(sock,(const char *) buffer);
+			}
+		}
+		// bad request. show nothing
+		else{
+			snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<IMG SRC='BarGraph%d.bmp' BORDER='0'>", (int) myData.GetADSegment() );
+			writestring(sock,(const char *) buffer);
+		}
 	}
 }
 
@@ -150,43 +173,17 @@ void LCDHandler( int sock, PCSTR url )
 	char buffer[MAX_COUNTER_BUFFER_LENGTH+1];
 
 	if((sock > 0) && (url != NULL)) {
-		// If Proper form request sent
 		if(strcmp("validate_string", myData.GetPost()) == 0){
-			// If Valid string is given
 			if(myData.isValid()){
 				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, " " );
 			}else{
-				// Display error otherwise
 				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<strong>INVALID: %s</strong>", myData.GetMessage() );
 			}
 			writestring(sock,(const char *) buffer);
 		}else{
-			// Display nothing If improper form request sent
 			snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, " " );
 			writestring(sock,(const char *) buffer);
 		}
 
-	}
-}
-
-
-void ADHandler( int sock, PCSTR url )
-{
-	char buffer[MAX_COUNTER_BUFFER_LENGTH+1];
-
-	if((sock > 0) && (url != NULL)) {
-		// If Proper form request sent
-		if(strcmp("read_sensor", myData.GetPost()) == 0){
-			if(myData.isValid()){
-				// Display bar graph based on read level from sensor
-				snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<IMG SRC='BarGraph%d.bmp' BORDER='0'>", (int) myData.GetADSegment() );
-				writestring(sock,(const char *) buffer);
-			}
-		}
-		// Display nothing If improper form request sent
-		else{
-			snprintf(buffer,MAX_COUNTER_BUFFER_LENGTH, "<IMG SRC='BarGraph%d.bmp' BORDER='0'>", (int) myData.GetADSegment() );
-			writestring(sock,(const char *) buffer);
-		}
 	}
 }

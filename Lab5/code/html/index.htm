@@ -51,6 +51,33 @@ padding: 0px 53px 0px 54px
 		</th>
 	</tr>
 	<tr>
+		<td>
+			<!--FUNCTIONCALL motorHandler -->
+		</td>
+	</tr>
+	<tr>
+		<td>Dir:</td>
+		<td>
+			<input type="radio" name="dir" value="Counter-Clockwise"> Counter-Clockwise<br>
+			<input type="radio" name="dir" value="Clockwise"> Clockwise<br>
+		</td>
+	</tr>
+	<tr>
+		<td>Rotations:</td>
+		<td>
+			<input type="number" min="0" max="10000" name="rotations" size="20">
+		</td>
+	</tr>
+	<tr>
+		<td>Mode:</td>
+		<td>
+			<!--Add Radio Buttons -->
+			<input type="radio" name="mode" value="Full"> Full<br>
+			<input type="radio" name="mode" value="Half"> Half<br>
+		</td>
+	</tr>
+	<tr>
+		<!--Submission Button-->
 		<td align = "center" colspan = "2">
 		<input type="submit" value="Submit Motor Values" onclick="document.getElementById('function').value='validate_motor';" />
 		</td>
@@ -59,7 +86,26 @@ padding: 0px 53px 0px 54px
  		</td>
  		<td>
  			<table id="LCD">
-	<tr >
+	<tr>
+		<tr>
+			<td  align = "center" >
+			<th>
+			LCD Input
+			</th>
+		</td>
+		</tr>
+	</tr>
+		<td>
+			<!--FUNCTIONCALL LCDHandler -->
+		</td>
+	</tr>
+	<tr>
+		<td>String:</td>
+		<td>
+			<input type="text" name="string" pattern="\S.{[\x20-\x7F]+,}\S" maxlength="48" size="20">
+		</td>
+	</tr>
+	<tr>
 		<td  align = "center" colspan = "2">
 		<input type="submit" value="Submit LCD String" onclick="document.getElementById('function').value='validate_string';" />
 		</td>
@@ -74,6 +120,20 @@ padding: 0px 53px 0px 54px
  		<td align = "center" >
  			<table id="Keypad">
 	<tr>
+		<th>
+		Keypad
+		</th>
+	</tr>
+	<tr>
+		<td>Last Button Pressed:</td>
+	</tr>
+	<tr>
+		<td>
+			<!--FUNCTIONCALL keypadHandler -->
+		</td>
+	</tr>
+
+	<tr>
 		<td  align = "center" colspan = "2">
 		<input type="submit" value="Read Keypad" onclick="document.getElementById('function').value='read_keypad';" />
 		</td>
@@ -87,6 +147,16 @@ padding: 0px 53px 0px 54px
 		<th>
 		A/D
 		</th>
+	</tr>
+	<tr>
+		<td>
+			Light Graph
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<!--FUNCTIONCALL ADHandler -->
+		</td>
 	</tr>
 	<tr>
 		<tr>
